@@ -50,6 +50,7 @@ class nexus (
   $download_folder       = $nexus::params::download_folder,
   $manage_config         = $nexus::params::manage_config,
   $md5sum                = $nexus::params::md5sum,
+  $service_ensure        = $nexus::params::service_ensure,
 ) inherits nexus::params {
   include stdlib
 
@@ -135,6 +136,7 @@ class nexus (
     nexus_home => "${nexus_root}/${nexus_home_dir}",
     nexus_user => $nexus_user,
     version    => $version,
+    ensure     => $service_ensure,
   }
 
   anchor{ 'nexus::setup': } -> Class['nexus::package'] -> Class['nexus::config'] -> Class['nexus::Service'] -> anchor { 'nexus::done': }

@@ -17,12 +17,16 @@
 # [*version*]
 #   The version of nexus
 #
+# [*ensure*]
+#   The ensure parameter to pass to the service resource
+#
 # === Examples
 #
 # class{ 'nexus::service':
 #   nexus_home => '/srv/nexus',
 #   nexus_user => 'nexus',
 #   version    => '2.8.0',
+#   ensure     => running,
 # }
 #
 # === Authors
@@ -38,6 +42,7 @@ class nexus::service (
   $nexus_user = $::nexus::nexus_user,
   $nexus_group = $::nexus::nexus_group,
   $version = $::nexus::version,
+  $ensure = $::nexus::service_ensure,
 ) {
   $nexus_script = "${nexus_home}/bin/nexus"
 
@@ -94,7 +99,7 @@ class nexus::service (
     }
 
     service{ 'nexus':
-      ensure  => running,
+      ensure  => $ensure,
       enable  => true,
       status  => $status_line,
       require => [File['/etc/init.d/nexus'],
